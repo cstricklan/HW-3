@@ -32,8 +32,8 @@ UR = ones([1 Nz]);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Compute Update Coefficients
-mER = (c0*dt)./ER;
-mHR = (c0*dt)./UR;
+mER = (c0*dt/dz)./ER;
+mHR = (c0*dt/dz)./UR;
 
 % Initialize Feilds
 Ey = zeros([1 Nz]);
@@ -44,26 +44,19 @@ Hx = zeros([1 Nz]);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 for t = 1:STEPS
-  for nz = 1:Nz
-    Hx1 = nz-1;
-    Ey1 = nz+1;
-    
-    %Handle Boundary
-    if(Hx1==0)
-      Hx1=Nz;
-    end
-    
-    if(Ey1>Nz)
-      Ey1 = 1;
-    end
-    
-    
-    % Calculate H
-    Hx(nz) = Hx(nz) + mHR(nz)*(Ey(Ey1)-Ey(nz))/dz;
 
-    % Calculate E
-    Ey(nz) = Ey(nz) + mER(nz)*(Hx(nz)-Hx(Hx1))/dz; 
+  % Calculate H
+  for nz = 1:Nz-1
+    Hx(nz) = Hx(nz) + mHR(nz)*(Ey(nz+1)-Ey(nz));
   end
+  Hx(Nz) = Hx(Nz) + mHR(Nz)*(0 - Ey(Nz));
+
+  % Calculate E  
+  Ey(1) = Ey(1) + mER(1)*(Hx(1) - 0);
+  for nz = 2:Nz
+    Ey(nz) = Ey(nz) + mER(nz)*(Hx(nz)-Hx(nz-1)); 
+  end
+  
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -74,26 +67,24 @@ fig = figure;
 SetFigure(fig, 'HW#3-P2', [680 274 965 826]);
 
 %Plot Magnetic Field
-subplot(211);ylabel('ytest');title('title1');
-h = imagesc(Hx);
-colorbar;
+subplot(211)
+h = plot(Hx, '-r', 'LineWidth', 2);
 title('Magnetic Field');
 h = get(h, 'Parent');
 set(h, 'Fontsize', 14);
 xlabel('z');
-ylabel('', 'Rotation', 0);
-set(gca,'YTickLabel',{'','',''})
+ylabel('Hx', 'Rotation', 0);
+set(gca,'YTickLabel',{'1','0.5','0', '-0.5', '-1'})
 
 %Plot Electric Field
-subplot(212);ylabel('ytest2');title('title2');
-h = imagesc(Ey);
-colorbar;
+subplot(212)
+h = plot(Ey, '-b', 'LineWidth', 2);
 title('Electric Field');
 h = get(h, 'Parent');
 set(h, 'Fontsize', 14);
 xlabel('z');
-ylabel('', 'Rotation', 0);
-set(gca,'YTickLabel',{'','',''})
+ylabel('Ey', 'Rotation', 0);
+set(gca,'YTickLabel',{'1','0.5','0', '-0.5', '-1'})
 
 
 
