@@ -3,7 +3,8 @@
 
 \usepackage[utf8x]{inputenc}
 \usepackage{amsmath}
- \usepackage{graphicx}
+\usepackage{graphicx}
+\usepackage{cancel} 
 
 \title{HW\#3-P1}
 \author{Christopher Stricklan}
@@ -74,7 +75,6 @@ This also allows for the centering of the fields invoked by the curl equations F
   \label{fig:YeeGridWithCurls}
 \end{figure}
 	
-
 \textbf{Substitution}
 
 Because we have satisfied the divergence equations by using the Yee Grid Scheme, we are now able to focus on the curl equations with our constituive relation equations \eqref{eq:constitutive1} and \eqref{eq:constitutive2} subsituted in.  We are also not injecting a Source.
@@ -98,13 +98,82 @@ Because we have satisfied the divergence equations by using the Yee Grid Scheme,
 
 The Electric and Magnetic Fields are three orders of magnitude different.  Rounding errors can propagate through our simulation, therefore we require that we normalize a Field.  In this case we are normalizing the Magnetic Field.
 
-\begin{equation}
+\begin{align}
   \vec{\tilde{H}} = \sqrt{\frac{\mu_0}{\epsilon_0}}\vec{H}
+  \Longrightarrow 
+  \nabla \times \vec{E} = -\frac{[\mu_r]}{c_0}\frac{\partial \vec{\tilde{H}}}{\partial t}\\
+  \nabla \times \vec{\tilde{H}} =  \frac{[\epsilon_r]}{c_0}\frac{\partial \vec{E}}{\partial t}\notag
+\end{align}
+
+
+\textbf{Expand Curl Equations}
+
+\begin{align}
+  \nabla \times \vec{E} = -\frac{[\mu_r]}{c_0}\frac{\partial \vec{\tilde{H}}}{\partial t}
+  \Longrightarrow\\
+  \frac{\partial E_z}{\partial y} - \frac{\partial E_y}{\partial z} = -\frac{1}{c_0}\left(\mu_{xx} \frac{\partial\tilde{H}_x}{\partial t} + \mu_{xy} \frac{\partial\tilde{H}_y}{\partial t} + \mu_{xz} \frac{\partial\tilde{H}_z}{\partial t}\right)\notag\\
+  \frac{\partial E_x}{\partial z} - \frac{\partial E_z}{\partial x} = -\frac{1}{c_0}\left(\mu_{yx} \frac{\partial\tilde{H}_x}{\partial t} + \mu_{yy} \frac{\partial\tilde{H}_y}{\partial t} + \mu_{yz} \frac{\partial\tilde{H}_z}{\partial t}\right)\notag\\
+  \frac{\partial E_y}{\partial x} - \frac{\partial E_x}{\partial y} = -\frac{1}{c_0}\left(\mu_{zx} \frac{\partial\tilde{H}_x}{\partial t} + \mu_{zy} \frac{\partial\tilde{H}_y}{\partial t} + \mu_{zz} \frac{\partial\tilde{H}_z}{\partial t}\right)\notag
+\end{align}
+
+\begin{align}
+  \nabla \times \vec{\tilde{H}} =  \frac{[\epsilon_r]}{c_0}\frac{\partial \vec{E}}{\partial t}
+  \Longrightarrow\\
+  \frac{\partial \tilde{H}_z}{\partial y} - \frac{\partial \tilde{H}_y}{\partial z} = \frac{1}{c_0}\left(\epsilon_{xx} \frac{\partial E_x}{\partial t} + \epsilon_{xy} \frac{\partial E_y}{\partial t} + \epsilon_{xz} \frac{\partial E_z}{\partial t}\right)\notag\\
+  \frac{\partial \tilde{H}_x}{\partial z} - \frac{\partial \tilde{H}_z}{\partial x} = \frac{1}{c_0}\left(\epsilon_{yx} \frac{\partial E_x}{\partial t} + \epsilon_{yy} \frac{\partial E_y}{\partial t} + \epsilon_{yz} \frac{\partial E_z}{\partial t}\right)\notag\\
+  \frac{\partial \tilde{H}_y}{\partial x} - \frac{\partial \tilde{H}_x}{\partial y} = \frac{1}{c_0}\left(\epsilon_{zx} \frac{\partial E_x}{\partial t} + \epsilon_{zy} \frac{\partial E_y}{\partial t} + \epsilon_{zz} \frac{\partial E_z}{\partial t}\right)\notag
+\end{align}
+
+
+\textbf{Cross Out Diagonal Tensors}
+
+\begin{align}
+  \nabla \times \vec{E} = -\frac{[\mu_r]}{c_0}\frac{\partial \vec{\tilde{H}}}{\partial t}
+  \Longrightarrow\\
+  \frac{\partial E_z}{\partial y} - \frac{\partial E_y}{\partial z} = -\frac{1}{c_0}\left(\mu_{xx} \frac{\partial\tilde{H}_x}{\partial t} + \cancel{\mu_{xy}\frac{\partial\tilde{H}_y}{\partial t}} + \cancel{\mu_{xz} \frac{\partial\tilde{H}_z}{\partial t}}\right)\notag\\
+  \frac{\partial E_x}{\partial z} - \frac{\partial E_z}{\partial x} = -\frac{1}{c_0}\left(\cancel{\mu_{yx} \frac{\partial\tilde{H}_x}{\partial t}} + \mu_{yy} \frac{\partial\tilde{H}_y}{\partial t} + \cancel{\mu_{yz} \frac{\partial\tilde{H}_z}{\partial t}}\right)\notag\\
+  \frac{\partial E_y}{\partial x} - \frac{\partial E_x}{\partial y} = -\frac{1}{c_0}\left(\cancel{\mu_{zx} \frac{\partial\tilde{H}_x}{\partial t}} + \cancel{\mu_{zy} \frac{\partial\tilde{H}_y}{\partial t}} + \mu_{zz} \frac{\partial\tilde{H}_z}{\partial t}\right)\notag
+\end{align}
+
+\begin{align}
+  \nabla \times \vec{\tilde{H}} =  \frac{[\epsilon_r]}{c_0}\frac{\partial \vec{E}}{\partial t}
+  \Longrightarrow\\
+  \frac{\partial \tilde{H}_z}{\partial y} - \frac{\partial \tilde{H}_y}{\partial z} = \frac{1}{c_0}\left(\epsilon_{xx} \frac{\partial E_x}{\partial t} + \cancel{\epsilon_{xy} \frac{\partial E_y}{\partial t}} + \cancel{\epsilon_{xz} \frac{\partial E_z}{\partial t}}\right)\notag\\
+  \frac{\partial \tilde{H}_x}{\partial z} - \frac{\partial \tilde{H}_z}{\partial x} = \frac{1}{c_0}\left(\cancel{\epsilon_{yx} \frac{\partial E_x}{\partial t}} + \epsilon_{yy} \frac{\partial E_y}{\partial t} + \cancel{\epsilon_{yz} \frac{\partial E_z}{\partial t}}\right)\notag\\
+  \frac{\partial \tilde{H}_y}{\partial x} - \frac{\partial \tilde{H}_x}{\partial y} = \frac{1}{c_0}\left(\cancel{\epsilon_{zx} \frac{\partial E_x}{\partial t}} + \cancel{\epsilon_{zy} \frac{\partial E_y}{\partial t}} + \epsilon_{zz} \frac{\partial E_z}{\partial t}\right)\notag
+\end{align}
+
+\textbf{Final Analytical Equations}
+
+These equations are our final Maxwell Equations that will be used to derive the Finite-Difference Equations for all dimensions.  We have one equation for each dimension for both the magentic and electric fields.  This gives a total of six equations that will need to be tracked.
+
+
+Magnetic Field Equations
+
+\begin{equation}
+  \frac{\partial \tilde{H}_z}{\partial y} - \frac{\partial \tilde{H}_y}{\partial z} = \frac{\epsilon_{xx}}{c_0}\frac{\partial E_x}{\partial t}
 \end{equation}
 
+\begin{equation}
+  \frac{\partial \tilde{H}_x}{\partial z} - \frac{\partial \tilde{H}_z}{\partial x} = \frac{\epsilon_{yy}}{c_0}\frac{\partial E_y}{\partial t}
+\end{equation}
 
+\begin{equation}
+  \frac{\partial \tilde{H}_y}{\partial x} - \frac{\partial \tilde{H}_x}{\partial y} = \frac{\epsilon_{zz} }{c_0}\frac{\partial E_z}{\partial t}
+\end{equation}
 
+Electric Field Equations
+\begin{equation}
+  \frac{\partial E_z}{\partial y} - \frac{\partial E_y}{\partial z} = -\frac{\mu_{xx}}{c_0}\frac{\partial\tilde{H}_x}{\partial t}
+\end{equation}
 
+\begin{equation}
+  \frac{\partial E_x}{\partial z} - \frac{\partial E_z}{\partial x} = -\frac{\mu_{yy}}{c_0}\frac{\partial\tilde{H}_y}{\partial t}
+\end{equation}
+
+\begin{equation}
+  \frac{\partial E_y}{\partial x} - \frac{\partial E_x}{\partial y} = -\frac{\mu_{zz}}{c_0}\frac{\partial\tilde{H}_z}{\partial t}
+\end{equation}
 
 
 
