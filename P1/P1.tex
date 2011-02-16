@@ -281,18 +281,131 @@ Ez - Figure \ref{fig:YeeGridEz} Equation \eqref{eq:YeeGridEz}
 \end{align}
 
 
+\textbf{Summary of Finite-Difference Equations}
+
+The six sets equations below are our Finite-Difference equations derived from Maxwell's Equations.  These equations we will use to derive equations for 1D, 2D, and 3D update equations for our FDTD algorithms.
+
+\begin{equation*}
+  \frac{\partial E_z}{\partial y} - \frac{\partial E_y}{\partial z} = -\frac{\mu_{xx}}{c_0}\frac{\partial\tilde{H}_x}{\partial t}
+\end{equation*}
+
+\begin{equation*}
+  \frac{\partial E_x}{\partial z} - \frac{\partial E_z}{\partial x} = -\frac{\mu_{yy}}{c_0}\frac{\partial\tilde{H}_y}{\partial t}
+\end{equation*}
+
+\begin{equation*}
+  \frac{\partial E_y}{\partial x} - \frac{\partial E_x}{\partial y} = -\frac{\mu_{zz}}{c_0}\frac{\partial\tilde{H}_z}{\partial t}
+\end{equation*}
+
+\begin{equation*}
+  \frac{\partial \tilde{H}_z}{\partial y} - \frac{\partial \tilde{H}_y}{\partial z} = -\frac{\epsilon_{xx}}{c_0}\frac{\partial E_x}{\partial t}
+\end{equation*}
+
+\begin{equation*}
+  \frac{\partial \tilde{H}_x}{\partial z} - \frac{\partial \tilde{H}_z}{\partial x} = -\frac{\epsilon_{yy}}{c_0}\frac{\partial E_y}{\partial t}
+\end{equation*}
+
+\begin{equation*}
+  \frac{\partial \tilde{H}_y}{\partial x} - \frac{\partial \tilde{H}_x}{\partial y} = -\frac{\epsilon_{zz}}{c_0}\frac{\partial E_z}{\partial t}
+\end{equation*}
+
+\[\longrightarrow\]
+
+\begin{equation*}
+  \frac{E_{z}^{i,j+1,k}\mid_{t} - E_{z}^{i,j,k}\mid_{t}}{\Delta y} - \frac{E_{y}^{i,j,k+1}\mid_{t} - E_{y}^{i,j,k}\mid_{t}}{\Delta z} = -\frac{\mu_{xx}^{i,j,k}}{c_0} \frac{\tilde{H}_{x}^{i,j,k}\mid_{t+\frac  {\Delta t}{2}} - \tilde{H}_{x}^{i,j,k}\mid_{t-\frac{\Delta t}{2}}}{\Delta t}\notag
+\end{equation*}
+
+\begin{equation*}
+  \frac{E_{x}^{i,j,k+1}\mid_{t} - E_{x}^{i,j,k}\mid_{t}}{\Delta z} - \frac{E_{z}^{i+1,j,k}\mid_{t} - E_{z}^{i,j,k}\mid_{t}}{\Delta x} = -\frac{\mu_{yy}^{i,j,k}}{c_0} \frac{\tilde{H}_{y}^{i,j,k}\mid_{t+\frac  {\Delta t}{2}} - \tilde{H}_{y}^{i,j,k}\mid_{t-\frac{\Delta t}{2}}}{\Delta t}\notag
+\end{equation*}
+
+\begin{equation*}
+  \frac{E_{y}^{i+1,j,k}\mid_{t} - E_{y}^{i,j,k}\mid_{t}}{\Delta x} - \frac{E_{x}^{i,j+1,k}\mid_{t} - E_{x}^{i,j,k}\mid_{t}}{\Delta y} = -\frac{\mu_{zz}^{i,j,k}}{c_0} \frac{\tilde{H}_{z}^{i,j,k}\mid_{t+\frac  {\Delta t}{2}} - \tilde{H}_{z}^{i,j,k}\mid_{t-\frac{\Delta t}{2}}}{\Delta t}\notag
+\end{equation*}
+
+\begin{equation*}
+  \frac{\tilde{H}_{z}^{i,j,k}\mid_{t+\frac{\Delta t}{2}} - \tilde{H}_{z}^{i,j-1,k}\mid_{t+\frac  {\Delta t}{2}}}{\Delta y} - \frac{\tilde{H}_{y}^{i,j,k}\mid_{t+\frac  {\Delta t}{2}} - \tilde{H}_{y}^{i,j,k-1}\mid_{t+\frac  {\Delta t}{2}}}{\Delta z} = \frac{\epsilon_{xx}^{i,j,k}}{c_0} \frac{E_{x}^{i,j,k}\mid_{t+\Delta t} - E_{x}^{i,j,k}\mid_{t}}{\Delta t}\notag
+\end{equation*}
+
+\begin{equation*}
+  \frac{\tilde{H}_{x}^{i,j,k}\mid_{t+\frac{\Delta t}{2}} - \tilde{H}_{x}^{i,j,k-1}\mid_{t+\frac  {\Delta t}{2}}}{\Delta z} - \frac{\tilde{H}_{z}^{i,j,k}\mid_{t+\frac  {\Delta t}{2}} - \tilde{H}_{z}^{i-1,j,k}\mid_{t+\frac  {\Delta t}{2}}}{\Delta x} = \frac{\epsilon_{yy}^{i,j,k}}{c_0} \frac{E_{y}^{i,j,k}\mid_{t+\Delta t} - E_{y}^{i,j,k}\mid_{t}}{\Delta t}\notag
+\end{equation*}
+
+\begin{equation*}
+  \frac{\tilde{H}_{y}^{i,j,k}\mid_{t+\frac{\Delta t}{2}} - \tilde{H}_{y}^{i-1,j,k}\mid_{t+\frac  {\Delta t}{2}}}{\Delta x} - \frac{\tilde{H}_{x}^{i,j,k}\mid_{t+\frac  {\Delta t}{2}} - \tilde{H}_{x}^{i,j-1,k}\mid_{t+\frac  {\Delta t}{2}}}{\Delta y} = \frac{\epsilon_{zz}^{i,j,k}}{c_0} \frac{E_{z}^{i,j,k}\mid_{t+\Delta t} - E_{z}^{i,j,k}\mid_{t}}{\Delta t}\notag
+\end{equation*}
 
 
 
+\textbf{Reduce to One-Dimension}
+
+We will reduce our Finite-Difference Equations to 1D.  This means that we will have material that is uniform in two directions.  
+This uniform material will cause the fields to be uniform as well.  The change in material in our case we will define to be in the z-drection there for in the x anx y direction
+will be uniform.  This means that the directives in this direction will also equal zero.
+
+\begin{equation*}
+ \frac{\partial}{\partial x} = \frac{\partial}{\partial y}=0
+\end{equation*}
+
+\begin{figure}[h]
+  \centering
+    \includegraphics[width=0.5\textwidth]{Slabs1D.png}
+  \caption{1D Problem}
+\end{figure}
 
 
+From our Finite-Difference equations we need to cancel out the x and y derivates that are zero.
 
 
+\begin{equation*}
+  \cancel{\frac{\partial E_z}{\partial y}} - \frac{\partial E_y}{\partial z} = -\frac{\mu_{xx}}{c_0}\frac{\partial\tilde{H}_x}{\partial t}
+\end{equation*}
 
+\begin{equation*}
+  \frac{\partial E_x}{\partial z} - \cancel{\frac{\partial E_z}{\partial x}} = -\frac{\mu_{yy}}{c_0}\frac{\partial\tilde{H}_y}{\partial t}
+\end{equation*}
 
+\begin{equation*}
+  \cancel{\frac{\partial E_y}{\partial x}} - \cancel{\frac{\partial E_x}{\partial y}} = -\frac{\mu_{zz}}{c_0}\frac{\partial\tilde{H}_z}{\partial t}
+\end{equation*}
 
+\begin{equation*}
+  \cancel{\frac{\partial \tilde{H}_z}{\partial y}} - \frac{\partial \tilde{H}_y}{\partial z} = -\frac{\epsilon_{xx}}{c_0}\frac{\partial E_x}{\partial t}
+\end{equation*}
 
+\begin{equation*}
+  \frac{\partial \tilde{H}_x}{\partial z} - \cancel{\frac{\partial \tilde{H}_z}{\partial x}} = -\frac{\epsilon_{yy}}{c_0}\frac{\partial E_y}{\partial t}
+\end{equation*}
 
+\begin{equation*}
+  \cancel{\frac{\partial \tilde{H}_y}{\partial x}} - \cancel{\frac{\partial \tilde{H}_x}{\partial y}} = -\frac{\epsilon_{zz}}{c_0}\frac{\partial E_z}{\partial t}
+\end{equation*}
+
+\[\longrightarrow\]
+
+\begin{equation*}
+  \cancel{\frac{E_{z}^{i,j+1,k}\mid_{t} - E_{z}^{i,j,k}\mid_{t}}{\Delta y}} - \frac{E_{y}^{i,j,k+1}\mid_{t} - E_{y}^{i,j,k}\mid_{t}}{\Delta z} = -\frac{\mu_{xx}^{i,j,k}}{c_0} \frac{\tilde{H}_{x}^{i,j,k}\mid_{t+\frac  {\Delta t}{2}} - \tilde{H}_{x}^{i,j,k}\mid_{t-\frac{\Delta t}{2}}}{\Delta t}\notag
+\end{equation*}
+
+\begin{equation*}
+  \frac{E_{x}^{i,j,k+1}\mid_{t} - E_{x}^{i,j,k}\mid_{t}}{\Delta z} - \cancel{\frac{E_{z}^{i+1,j,k}\mid_{t} - E_{z}^{i,j,k}\mid_{t}}{\Delta x}} = -\frac{\mu_{yy}^{i,j,k}}{c_0} \frac{\tilde{H}_{y}^{i,j,k}\mid_{t+\frac  {\Delta t}{2}} - \tilde{H}_{y}^{i,j,k}\mid_{t-\frac{\Delta t}{2}}}{\Delta t}\notag
+\end{equation*}
+
+\begin{equation*}
+  \cancel{\frac{E_{y}^{i+1,j,k}\mid_{t} - E_{y}^{i,j,k}\mid_{t}}{\Delta x}} - \cancel{\frac{E_{x}^{i,j+1,k}\mid_{t} - E_{x}^{i,j,k}\mid_{t}}{\Delta y}} = -\frac{\mu_{zz}^{i,j,k}}{c_0} \frac{\tilde{H}_{z}^{i,j,k}\mid_{t+\frac  {\Delta t}{2}} - \tilde{H}_{z}^{i,j,k}\mid_{t-\frac{\Delta t}{2}}}{\Delta t}\notag
+\end{equation*}
+
+\begin{equation*}
+  \cancel{\frac{\tilde{H}_{z}^{i,j,k}\mid_{t+\frac{\Delta t}{2}} - \tilde{H}_{z}^{i,j-1,k}\mid_{t+\frac  {\Delta t}{2}}}{\Delta y}} - \frac{\tilde{H}_{y}^{i,j,k}\mid_{t+\frac  {\Delta t}{2}} - \tilde{H}_{y}^{i,j,k-1}\mid_{t+\frac  {\Delta t}{2}}}{\Delta z} = \frac{\epsilon_{xx}^{i,j,k}}{c_0} \frac{E_{x}^{i,j,k}\mid_{t+\Delta t} - E_{x}^{i,j,k}\mid_{t}}{\Delta t}\notag
+\end{equation*}
+
+\begin{equation*}
+  \frac{\tilde{H}_{x}^{i,j,k}\mid_{t+\frac{\Delta t}{2}} - \tilde{H}_{x}^{i,j,k-1}\mid_{t+\frac  {\Delta t}{2}}}{\Delta z} - \cancel{\frac{\tilde{H}_{z}^{i,j,k}\mid_{t+\frac  {\Delta t}{2}} - \tilde{H}_{z}^{i-1,j,k}\mid_{t+\frac  {\Delta t}{2}}}{\Delta x}} = \frac{\epsilon_{yy}^{i,j,k}}{c_0} \frac{E_{y}^{i,j,k}\mid_{t+\Delta t} - E_{y}^{i,j,k}\mid_{t}}{\Delta t}\notag
+\end{equation*}
+
+\begin{equation*}
+  \cancel{\frac{\tilde{H}_{y}^{i,j,k}\mid_{t+\frac{\Delta t}{2}} - \tilde{H}_{y}^{i-1,j,k}\mid_{t+\frac  {\Delta t}{2}}}{\Delta x}} - \cancel{\frac{\tilde{H}_{x}^{i,j,k}\mid_{t+\frac  {\Delta t}{2}} - \tilde{H}_{x}^{i,j-1,k}\mid_{t+\frac  {\Delta t}{2}}}{\Delta y}} = \frac{\epsilon_{zz}^{i,j,k}}{c_0} \frac{E_{z}^{i,j,k}\mid_{t+\Delta t} - E_{z}^{i,j,k}\mid_{t}}{\Delta t}\notag
+\end{equation*}
 
 
 
