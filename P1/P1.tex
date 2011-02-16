@@ -175,22 +175,110 @@ Electric Field Equations
   \frac{\partial E_y}{\partial x} - \frac{\partial E_x}{\partial y} = -\frac{\mu_{zz}}{c_0}\frac{\partial\tilde{H}_z}{\partial t}
 \end{equation}
 
+\textbf{Finite-Difference Derived Equations}
+
+Each equation needs to be derived based on the Yee Grid Model.  Remember that adjacent cells will need to be used to perform the calcuation of the individual finite-difference equations for Magnetic and Electric fields in each direction x,y,z
+
+Hx - Figure \ref{fig:YeeGridHx} Equation \eqref{eq:YeeGridHx} 
+
+\begin{figure}[h]
+  \centering
+    \includegraphics[width=0.5\textwidth]{YeeGridHx.png}
+  \caption{Yee Grid Hx}
+  \label{fig:YeeGridHx}
+\end{figure}
+
+\begin{align}
+  \label{eq:YeeGridHx}
+  \frac{\partial E_z}{\partial y} - \frac{\partial E_y}{\partial z} = -\frac{\mu_{xx}}{c_0}\frac{\partial\tilde{H}_x}{\partial t}
+  \longrightarrow\\
+  \frac{E_{z}^{i,j+1,k}\mid_{t} - E_{z}^{i,j,k}\mid_{t}}{\Delta y} - \frac{E_{y}^{i,j,k+1}\mid_{t} - E_{y}^{i,j,k}\mid_{t}}{\Delta z} = -\frac{\mu_{xx}^{i,j,k}}{c_0} \frac{\tilde{H}_{x}^{i,j,k}\mid_{t+\frac  {\Delta t}{2}} - \tilde{H}_{x}^{i,j,k}\mid_{t-\frac{\Delta t}{2}}}{\Delta t}\notag
+\end{align}
 
 
+Hy - Figure \ref{fig:YeeGridHy} Equation \eqref{eq:YeeGridHy} 
+
+\begin{figure}[h]
+  \centering
+    \includegraphics[width=0.5\textwidth]{YeeGridHy.png}
+  \caption{Yee Grid Hy}
+  \label{fig:YeeGridHy}
+\end{figure}
+
+\begin{align}
+  \label{eq:YeeGridHy}
+  \frac{\partial E_x}{\partial z} - \frac{\partial E_z}{\partial x} = -\frac{\mu_{yy}}{c_0}\frac{\partial\tilde{H}_y}{\partial t}
+  \longrightarrow\\
+  \frac{E_{x}^{i,j,k+1}\mid_{t} - E_{x}^{i,j,k}\mid_{t}}{\Delta z} - \frac{E_{z}^{i+1,j,k}\mid_{t} - E_{z}^{i,j,k}\mid_{t}}{\Delta x} = -\frac{\mu_{yy}^{i,j,k}}{c_0} \frac{\tilde{H}_{y}^{i,j,k}\mid_{t+\frac  {\Delta t}{2}} - \tilde{H}_{y}^{i,j,k}\mid_{t-\frac{\Delta t}{2}}}{\Delta t}\notag
+\end{align}
 
 
+Hz - Figure \ref{fig:YeeGridHz} Equation \eqref{eq:YeeGridHz} 
+
+\begin{figure}[h]
+  \centering
+    \includegraphics[width=0.5\textwidth]{YeeGridHz.png}
+  \caption{Yee Grid Hz}
+  \label{fig:YeeGridHz}
+\end{figure}
+
+\begin{align}
+  \label{eq:YeeGridHz}
+  \frac{\partial E_y}{\partial x} - \frac{\partial E_x}{\partial y} = -\frac{\mu_{zz}}{c_0}\frac{\partial\tilde{H}_z}{\partial t}
+  \longrightarrow\\
+  \frac{E_{y}^{i+1,j,k}\mid_{t} - E_{y}^{i,j,k}\mid_{t}}{\Delta x} - \frac{E_{x}^{i,j+1,k}\mid_{t} - E_{x}^{i,j,k}\mid_{t}}{\Delta y} = -\frac{\mu_{zz}^{i,j,k}}{c_0} \frac{\tilde{H}_{z}^{i,j,k}\mid_{t+\frac  {\Delta t}{2}} - \tilde{H}_{z}^{i,j,k}\mid_{t-\frac{\Delta t}{2}}}{\Delta t}\notag
+\end{align}
 
 
+Ex - Figure \ref{fig:YeeGridEx} Equation \eqref{eq:YeeGridEx} 
+
+\begin{figure}[h]
+  \centering
+    \includegraphics[width=0.5\textwidth]{YeeGridEx.png}
+  \caption{Yee Grid Ex}
+  \label{fig:YeeGridEx}
+\end{figure}
+
+\begin{align}
+  \label{eq:YeeGridEx}
+  \frac{\partial \tilde{H}_z}{\partial y} - \frac{\partial \tilde{H}_y}{\partial z} = -\frac{\epsilon_{xx}}{c_0}\frac{\partial E_x}{\partial t}
+  \longrightarrow\\
+  \frac{\tilde{H}_{z}^{i,j,k}\mid_{t+\frac{\Delta t}{2}} - \tilde{H}_{z}^{i,j-1,k}\mid_{t+\frac  {\Delta t}{2}}}{\Delta y} - \frac{\tilde{H}_{y}^{i,j,k}\mid_{t+\frac  {\Delta t}{2}} - \tilde{H}_{y}^{i,j,k-1}\mid_{t+\frac  {\Delta t}{2}}}{\Delta z} = \frac{\epsilon_{xx}^{i,j,k}}{c_0} \frac{E_{x}^{i,j,k}\mid_{t+\Delta t} - E_{x}^{i,j,k}\mid_{t}}{\Delta t}\notag
+\end{align}
 
 
+Ey - Figure \ref{fig:YeeGridEy} Equation \eqref{eq:YeeGridEy} 
+
+\begin{figure}[h]
+  \centering
+    \includegraphics[width=0.5\textwidth]{YeeGridEy.png}
+  \caption{Yee Grid Ey}
+  \label{fig:YeeGridEy}
+\end{figure}
+
+\begin{align}
+  \label{eq:YeeGridEy}
+  \frac{\partial \tilde{H}_x}{\partial z} - \frac{\partial \tilde{H}_z}{\partial x} = -\frac{\epsilon_{yy}}{c_0}\frac{\partial E_y}{\partial t}
+  \longrightarrow\\
+  \frac{\tilde{H}_{x}^{i,j,k}\mid_{t+\frac{\Delta t}{2}} - \tilde{H}_{x}^{i,j,k-1}\mid_{t+\frac  {\Delta t}{2}}}{\Delta z} - \frac{\tilde{H}_{z}^{i,j,k}\mid_{t+\frac  {\Delta t}{2}} - \tilde{H}_{z}^{i-1,j,k}\mid_{t+\frac  {\Delta t}{2}}}{\Delta x} = \frac{\epsilon_{yy}^{i,j,k}}{c_0} \frac{E_{y}^{i,j,k}\mid_{t+\Delta t} - E_{y}^{i,j,k}\mid_{t}}{\Delta t}\notag
+\end{align}
 
 
+Ez - Figure \ref{fig:YeeGridEz} Equation \eqref{eq:YeeGridEz} 
 
+\begin{figure}[h]
+  \centering
+    \includegraphics[width=0.5\textwidth]{YeeGridEz.png}
+  \caption{Yee Grid Ez}
+  \label{fig:YeeGridEz}
+\end{figure}
 
-
-
-
-
+\begin{align}
+  \label{eq:YeeGridEz}
+  \frac{\partial \tilde{H}_y}{\partial x} - \frac{\partial \tilde{H}_x}{\partial y} = -\frac{\epsilon_{zz}}{c_0}\frac{\partial E_z}{\partial t}
+  \longrightarrow\\
+  \frac{\tilde{H}_{y}^{i,j,k}\mid_{t+\frac{\Delta t}{2}} - \tilde{H}_{y}^{i-1,j,k}\mid_{t+\frac  {\Delta t}{2}}}{\Delta x} - \frac{\tilde{H}_{x}^{i,j,k}\mid_{t+\frac  {\Delta t}{2}} - \tilde{H}_{x}^{i,j-1,k}\mid_{t+\frac  {\Delta t}{2}}}{\Delta y} = \frac{\epsilon_{zz}^{i,j,k}}{c_0} \frac{E_{z}^{i,j,k}\mid_{t+\Delta t} - E_{z}^{i,j,k}\mid_{t}}{\Delta t}\notag
+\end{align}
 
 
 
