@@ -20,10 +20,7 @@
 }
 
 \begin{document}
-
-\textbf{Problem 1}
-
-
+%\maketitle
 \textbf{Maxwell's Equations}  
 
 \begin{equation}
@@ -523,40 +520,6 @@ Update Equation for Hx
   \frac{E_{y}^{k+1}\mid_{t} - E_{y}^{k}\mid_{t}}{\Delta z} = \frac{\mu_{xx}^{k}}{c_0} \frac{\tilde{H}_{x}^{k}\mid_{t+\frac  {\Delta t}{2}} - \tilde{H}_{x}^{k}\mid_{t-\frac{\Delta t}{2}}}{\Delta t}
 \end{equation*}
 
-We want to sove for the H-Field at the future time value
-
-\begin{equation*}
-  \frac{\mu_{xx}^{k}}{c_0} \frac{\tilde{H}_{x}^{k}\mid_{t+\frac  {\Delta t}{2}} - \tilde{H}_{x}^{k}\mid_{t-\frac{\Delta t}{2}}}{\Delta t} = \frac{E_{y}^{k+1}\mid_{t} - E_{y}^{k}\mid_{t}}{\Delta z}
-\end{equation*}
-
-\begin{equation*}
-  \tilde{H}_{x}^{k}\mid_{t+\frac{\Delta t}{2}} - \tilde{H}_{x}^{k}\mid_{t-\frac{\Delta t}{2}} = \frac{c_0\Delta t}{\mu_{xx}^{k}}\left(\frac{E_{y}^{k+1}\mid_{t} - E_{y}^{k}\mid_{t}}{\Delta z}\right)
-\end{equation*}
-
-\begin{equation}
-  \tilde{H}_{x}^{k}\mid_{t+\frac{\Delta t}{2}} = \tilde{H}_{x}^{k}\mid_{t-\frac{\Delta t}{2}} + \left(\frac{c_0\Delta t}{\mu_{xx}^{k}}\right)\left(\frac{E_{y}^{k+1}\mid_{t} - E_{y}^{k}\mid_{t}}{\Delta z}\right)
-\end{equation}
-
-\textbf{Update Coefficients}
-
-Since the update coefficients don't change during the simulation.  We can compute them once before our FDTD Algorithm is actually implemented in loop.
-
-\begin{equation}
-  \tilde{H}_{x}^{k}\mid_{t+\frac{\Delta t}{2}} = \tilde{H}_{x}^{k}\mid_{t-\frac{\Delta t}{2}} + m_{H_x}^{k}\left(\frac{E_{y}^{k+1}\mid_{t} - E_{y}^{k}\mid_{t}}{\Delta z}\right)
-\end{equation}
-
-\begin{equation}
-  E_{y}^{k}\mid_{t+\Delta t} = E_{y}^{k}\mid_{t} + m_{E_y}^{k}\left(\frac{\tilde{H}_{x}^{k}\mid_{t+\frac{\Delta t}{2}} - \tilde{H}_{x}^{k-1}\mid_{t+\frac  {\Delta t}{2}}}{\Delta z}\right)
-\end{equation}
-
-
-\begin{equation}
-  m_{E_y}^{k} = \frac{c_0 \Delta t}{\epsilon_{yy}^{k}}
-\end{equation}
-
-\begin{equation}
-   m_{H_x}^{k} = \frac{c_0 \Delta t}{\mu_{yy}^{k}}
-\end{equation}
 
 
 
